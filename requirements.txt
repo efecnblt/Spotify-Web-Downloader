@@ -1,0 +1,5 @@
+flask==2.2.5
+requests==2.31.0
+spotipy==2.25.1
+yt-dlp==2025.1.26
+ffmpeg-python==0.2.0 

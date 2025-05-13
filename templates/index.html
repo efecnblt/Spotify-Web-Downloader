@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Şarkı İndirici</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #191414;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .spotify-btn {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .spotify-btn:hover {
+            background-color: #1ed760;
+            transform: scale(1.05);
+        }
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            background: linear-gradient(to bottom, #191414, #121212);
+            padding: 20px 0;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: -webkit-linear-gradient(#1DB954, #1ed760);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        .features {
+            margin: 40px 0;
+        }
+        .feature-card {
+            background-color: #282828;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            color: #1DB954;
+            margin-bottom: 15px;
+        }
+        .credentials-form {
+            background-color: #282828;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        .form-control {
+            background-color: #333;
+            border: none;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .form-control:focus {
+            background-color: #444;
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+        }
+        .form-label {
+            color: #ccc;
+        }
+        .info-link {
+            color: #1DB954;
+            text-decoration: none;
+        }
+        .info-link:hover {
+            color: #1ed760;
+            text-decoration: underline;
+        }
+        .tab-content {
+            margin-top: 20px;
+        }
+        .nav-tabs .nav-link {
+            color: #aaa;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-tabs .nav-link.active {
+            color: #1DB954;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #1DB954;
+        }
+        .instructions-section {
+            background-color: #282828;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 60px auto;
+            max-width: 900px;
+        }
+        .instructions-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #1DB954;
+        }
+        .step-card {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .step-number {
+            position: absolute;
+            left: -15px;
+            top: -15px;
+            background-color: #1DB954;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .step-title {
+            color: #1DB954;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .step-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png" alt="Spotify Logo" class="logo">
+        <h1>Spotify Şarkılarını İndir</h1>
+        <p class="lead mb-4">Spotify'daki beğendiğiniz şarkıları tek bir tıklama ile indirin!</p>
+        
+        <div class="credentials-form">
+            <h3 class="mb-4 text-center">Spotify API Bilgilerinizi Girin</h3>
+            <form id="spotify-credentials-form" action="/set-credentials" method="post">
+                <div class="mb-3">
+                    <label for="client_id" class="form-label">Client ID</label>
+                    <input type="text" class="form-control" id="client_id" name="client_id" required>
+                </div>
+                <div class="mb-3">
+                    <label for="client_secret" class="form-label">Client Secret</label>
+                    <input type="password" class="form-control" id="client_secret" name="client_secret" required>
+                </div>
+                <div class="mb-3">
+                    <label for="redirect_uri" class="form-label">Redirect URI</label>
+                    <input type="text" class="form-control" id="redirect_uri" name="redirect_uri" value="http://127.0.0.1:5000/callback" readonly>
+                    <div class="form-text text-light">
+                        Bu URL'i Spotify Developer Dashboard'unuzdaki Redirect URIs bölümüne ekleyin.
+                    </div>
+                </div>
+                <button type="submit" class="spotify-btn btn btn-lg w-100">
+                    <i class="fab fa-spotify me-2"></i>Spotify ile Giriş Yap
+                </button>
+            </form>
+            
+            <div class="mt-3">
+                <p class="text-muted">
+                    Client ID ve Client Secret'ı nereden alabilirim? 
+                    <a href="https://developer.spotify.com/dashboard/" target="_blank" class="info-link">
+                        Spotify for Developers Dashboard
+                    </a>'a kaydolun ve aşağıdaki adımları takip edin.
+                </p>
+            </div>
+        </div>
+        
+        <div class="container features">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-sign-in-alt"></i></div>
+                        <h3>Kolay Giriş</h3>
+                        <p>Spotify hesabınızla hızlıca giriş yapın</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Beğenilen Şarkılar</h3>
+                        <p>Tüm beğendiğiniz şarkıları otomatik olarak görüntüleyin</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-download"></i></div>
+                        <h3>Hızlı İndirme</h3>
+                        <p>Şarkıları yüksek kalitede hızlıca indirin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions-section">
+            <h2 class="instructions-title">Nasıl Kullanılır?</h2>
+            
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Spotify Developer Hesabı Oluşturun</h3>
+                <p>
+                    <a href="https://developer.spotify.com/dashboard/" target="_blank" class="info-link">
+                        Spotify Developer Dashboard
+                    </a>'a gidin ve hesabınızla giriş yapın.
+                </p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Yeni Bir Uygulama Oluşturun</h3>
+                <p>Dashboard sayfasında "Create App" butonuna tıklayın ve aşağıdaki bilgileri doldurun:</p>
+                <ul class="text-light">
+                    <li>App name: İstediğiniz bir isim (örn. "Spotify Downloader")</li>
+                    <li>App description: Kısa bir açıklama</li>
+                    <li>Website: Boş bırakabilirsiniz</li>
+                    <li>Redirect URI: <strong>http://127.0.0.1:5000/callback</strong></li>
+                </ul>
+                <p>Bu URI'yi tam olarak yukarıdaki gibi girmek önemlidir, aksi halde uygulama çalışmayacaktır.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Client ID ve Client Secret Bilgilerinizi Alın</h3>
+                <p>Uygulamanız oluşturulduktan sonra, dashboard'da uygulamanızın Client ID'sini görebilirsiniz. "Show Client Secret" butonuna tıklayarak Client Secret'ı da görüntüleyebilirsiniz.</p>
+                <p>Bu bilgileri bu sayfadaki forma girin.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Spotify Hesabınızla Giriş Yapın</h3>
+                <p>Bilgilerinizi girdikten sonra "Bu Bilgilerle Giriş Yap" butonuna tıklayın ve Spotify hesabınızla giriş yapın. Uygulamaya gerekli izinleri verin.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h3 class="step-title">Beğenilen Şarkılarınızı Görüntüleyin</h3>
+                <p>Giriş yaptıktan sonra "Beğenilen Şarkıları Getir" butonuna tıklayarak Spotify hesabınızdaki tüm beğendiğiniz şarkıları görüntüleyin.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h3 class="step-title">İndirme İşlemini Başlatın</h3>
+                <p>İstediğiniz eş zamanlı indirme sayısını seçin ve "İndirmeyi Başlat" butonuna tıklayın. İndirme işlemi arka planda başlayacak ve ilerlemesini takip edebileceksiniz.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h3 class="step-title">Şarkılarınızı İndirin</h3>
+                <p>İndirme işlemi tamamlandığında "İndirilen Dosyaları Al" butonuna tıklayarak tüm şarkılarınızı ZIP formatında indirebilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
